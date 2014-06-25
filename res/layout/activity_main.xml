@@ -3,6 +3,6 @@
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.sector67.otp.ocr.MainActivity"
+    tools:context="org.sector67.ocr_test_app.MainActivity"
     tools:ignore="MergeRootFrame" />
 
