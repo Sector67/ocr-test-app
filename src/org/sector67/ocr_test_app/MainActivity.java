@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
 		
 		Log.e(TAG, "In onCreate " + DATA_PATH + "");
 
-		String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/" };
+		String[] paths = new String[] { DATA_PATH, DATA_PATH + "tessdata/configs/" };
 
 		for (String path : paths) {
 			File dir = new File(path);
@@ -76,6 +76,38 @@ public class MainActivity extends Activity {
 				Log.e(TAG, "Was unable to copy " + lang + " traineddata " + e.toString());
 			}
 		}
+
+		
+		// lang.traineddata file with the app (in assets folder)
+		// You can get them at:
+		// http://code.google.com/p/tesseract-ocr/downloads/list
+		// This area needs work and optimization
+		if (!(new File(DATA_PATH + "tessdata/configs/config.txt")).exists()) {
+			try {
+
+				AssetManager assetManager = getAssets();
+				InputStream in = assetManager.open("tessdata/configs/config.txt");
+				//GZIPInputStream gin = new GZIPInputStream(in);
+				OutputStream out = new FileOutputStream(DATA_PATH
+						+ "tessdata/configs/config.txt");
+
+				// Transfer bytes from in to out
+				byte[] buf = new byte[1024];
+				int len;
+				//while ((lenf = gin.read(buff)) > 0) {
+				while ((len = in.read(buf)) > 0) {
+					out.write(buf, 0, len);
+				}
+				in.close();
+				//gin.close();
+				out.close();
+				
+				Log.v(TAG, "Copied configs/config.txt");
+			} catch (IOException e) {
+				Log.e(TAG, "Was unable to copy configs/config.txt " + e.toString());
+			}
+		}
+		
 		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
